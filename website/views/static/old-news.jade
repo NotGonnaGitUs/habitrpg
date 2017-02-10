@@ -5,8 +5,9 @@ block vars
   - var menuItem = 'oldNews'
 
 block title
-  title Old News
+  title News
 
 block content
-  include ../shared/new-stuff
-  +oldNews()
+  .static-old-news
+    include ../shared/new-stuff
+    +oldNews()

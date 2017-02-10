@@ -3,15 +3,16 @@
   .panel-heading
     h3.panel-title=env.t('challenges')
       |&nbsp;
-      a.pull-right(target='_blank', href='http://habitrpg.wikia.com/wiki/Challenges')
+      a.pull-right(target='_blank', href=env.t('moreInfoChallengesURL'))
         small=env.t('moreInfo')
   .panel-body.modal-fixed-height(bindonce='group.challenges')
     div(ng-if='group.challenges.length > 0')
       table.table.table-striped
         tr(ng-repeat='challenge in group.challenges')
           td
-            a(ui-sref='options.social.challenges.detail({cid:challenge._id})') {{challenge.name}}
-    div(ng-if='group.challenges.length == 0')
+            a(ui-sref='options.social.challenges.detail({cid:challenge._id, groupIdFilter: group._id})')
+              markdown(text='challenge.name')
+    div(ng-if='!group.challenges || group.challenges.length == 0')
       p
         |&nbsp;
         =env.t('noChallenges')

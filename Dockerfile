@@ -1,41 +1,45 @@
 FROM ubuntu:trusty
 
-MAINTAINER Thibault Cohen <titilambert@gmail.com>
+MAINTAINER Sabe Jones <sabe@habitica.com>
 
-ENV DEBIAN_FRONTEND noninteractive
+# Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
+RUN echo -e '#!/bin/sh\nexit 0' > /usr/sbin/policy-rc.d
 
-### Init
-
+# Install prerequisites
 RUN apt-get update
+RUN apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    libfontconfig1 \
+    libfreetype6 \
+    libkrb5-dev \
+    python
 
-### Utils
+# Install NodeJS
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+RUN apt-get install -y nodejs
 
-RUN apt-get install -y git vim graphicsmagick nodejs phantomjs npm pkgconf libcairo2-dev libjpeg8-dev
+# Install npm@latest
+RUN curl -sL https://www.npmjs.org/install.sh | sh
 
-### Installation
+# Clean up package management
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
-RUN cd /opt && git clone https://github.com/HabitRPG/habitrpg.git
+# Install global packages
+RUN npm install -g gulp grunt-cli bower mocha
 
-#RUN cd /opt/habitrpg && git checkout -t origin/develop
+# Clone Habitica repo and install dependencies
+WORKDIR /habitrpg
+RUN git clone https://github.com/HabitRPG/habitica.git /habitrpg
+RUN npm install
+RUN bower install --allow-root
 
-RUN cd /opt/habitrpg && git pull
+# Create environment config file and build directory
+RUN cp config.json.example config.json
+RUN mkdir -p ./website/build
 
-RUN cd /opt/habitrpg && npm install -g grunt-cli bower nodemon
-
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-
-RUN cd /opt/habitrpg && npm install
-
-# Add config file
-
-ADD ./config.json /opt/habitrpg/
-
-RUN mkdir -p /opt/habitrpg/build
-
-RUN cd /opt/habitrpg && bower install --allow-root
-
-# Run server
-
-RUN cd /opt/habitrpg && grunt build:prod 
-
-CMD cd /opt/habitrpg && grunt nodemon
+# Start Habitica
+EXPOSE 3000
+CMD ["npm", "start"]

@@ -6,6 +6,15 @@
  * directory, and it will automatically be included.
  */
 
-require('babel/register');
-require('glob').sync('./tasks/gulp-*').forEach(require);
-require('gulp').task('default', ['test']);
+require('babel-register');
+
+if (process.env.NODE_ENV === 'production') {
+  require('./gulp/gulp-semanticui');
+  require('./gulp/gulp-apidoc');
+  require('./gulp/gulp-newstuff');
+  require('./gulp/gulp-build');
+  require('./gulp/gulp-babelify');
+} else {
+  require('glob').sync('./gulp/gulp-*').forEach(require);
+  require('gulp').task('default', ['test']);
+}

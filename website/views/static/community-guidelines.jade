@@ -17,7 +17,7 @@ block vars
   - var layoutEnv = env
 
 block title
-  title HabitRPG &VerticalLine;&nbsp;
+  title Habitica &VerticalLine;&nbsp;
     =env.t('communityGuidelines')
 
 block content
@@ -28,8 +28,8 @@ block content
       p.pagemeta
         =env.t('lastUpdated')
         |&nbsp;
-        =env.t('May')
-        |&nbsp;27&comma; 2015
+        =env.t('February')
+        |&nbsp;28&comma; 2016
       h2#welcome=env.t('commGuideHeadingWelcome')
       .clearfix
         img.pull-left(src='/community-guidelines-images/intro.png', alt='')
@@ -73,6 +73,8 @@ block content
             strong SabreCat (Sabe)
           li
             strong paglias (Matteo)
+          li
+            strong viirus (Phillip)
 
       p=env.t('commGuidePara010')
       p
@@ -94,6 +96,8 @@ block content
             strong Alys (LadyAlys&nbsp;
               =env.t('commGuidePara011c')
               |)
+          li
+            strong Cantras
           li
             strong Blade (crookedneighbor&nbsp;
               =env.t('commGuidePara011d')
@@ -324,15 +328,15 @@ block content
       h2#links=env.t('commGuideHeadingLinks')
       ul
        li
-         a(href='https://habitrpg.com/#/options/groups/guilds/5481ccf3-5d2d-48a9-a871-70a7380cee5a' target='_blank')=env.t('commGuideLink01')
+         a(href='https://habitica.com/#/options/groups/guilds/5481ccf3-5d2d-48a9-a871-70a7380cee5a' target='_blank')=env.t('commGuideLink01')
          |:&nbsp;
          =env.t('commGuideLink01description')
        li
-         a(href='https://habitrpg.com/#/options/groups/guilds/426c2c1a-eed0-4997-9b73-d30fc1397688' target='_blank')=env.t('commGuideLink02')
+         a(href='https://habitica.com/#/options/groups/guilds/426c2c1a-eed0-4997-9b73-d30fc1397688' target='_blank')=env.t('commGuideLink02')
          |:&nbsp;
          =env.t('commGuideLink02description')
        li
-         a(href='http://habitrpg.wikia.com/wiki/HabitRPG_Wiki' target='_blank')=env.t('commGuideLink03')
+         !=env.t('commGuideLink03')
          |:&nbsp;
          =env.t('commGuideLink03description')
        li
@@ -340,19 +344,19 @@ block content
          |:&nbsp;
          =env.t('commGuideLink04description')
        li
-         a(href='https://trello.com/b/EpoYEYod/habitrpg' target='_blank')=env.t('commGuideLink05')
+         a(href='https://trello.com/b/EpoYEYod/' target='_blank')=env.t('commGuideLink05')
          |:&nbsp;
          =env.t('commGuideLink05description')
        li
-         a(href='https://trello.com/b/mXK3Eavg/habitrpg-mobile' target='_blank')=env.t('commGuideLink06')
+         a(href='https://trello.com/b/mXK3Eavg/' target='_blank')=env.t('commGuideLink06')
          |:&nbsp;
          =env.t('commGuideLink06description')
        li
-         a(href='https://trello.com/b/vwuE9fbO/habitrpg-pixel-art' target='_blank')=env.t('commGuideLink07')
+         a(href='https://trello.com/b/vwuE9fbO/' target='_blank')=env.t('commGuideLink07')
          |:&nbsp;
          =env.t('commGuideLink07description')
        li
-         a(href='https://trello.com/b/nnv4QIRX/habitrpg-quests' target='_blank')=env.t('commGuideLink08')
+         a(href='https://trello.com/b/nnv4QIRX/' target='_blank')=env.t('commGuideLink08')
          |:&nbsp;
          =env.t('commGuideLink08description')
 
@@ -369,4 +373,3 @@ block content
         li Shaner
         li Starsystemic
         li UncommonCriminal
-

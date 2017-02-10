@@ -1,1 +1,1 @@
-web: ./node_modules/.bin/grunt nodemon;
+web: node ./website/transpiled-babel/index.js

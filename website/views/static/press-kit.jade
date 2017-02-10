@@ -11,33 +11,76 @@ block extraHead
   style.
     .press-img {
       max-width: 500px;
+      max-height: 500px;
+      padding: 5px;
     }
 
 block content
-  h2= env.t('presskit')
-  p= env.t('presskitText')
-  p= env.t('presskitDownload')
-    | &nbsp;
-    a.btn.btn-success(href='/presskit/presskit.zip') presskit.zip
-  - var imgs = ['habitrpg_pixel', 'HabitRPGdevices', 'Market Sample Screen', 'Challenges Sample Screen', 'Equipment Sample Screen', 'Guilds Sample Screen', 'HabitRPGPromoPostCard6', 'HabitRPGPromoThin', 'Laundromancer_by_Arcosine', 'promo mobile inventorySTILL1', 'promo mobile inventorySTILL2', 'PROMOdevices2', 'SnackLessMonster_by_Arcosine', 'stag_battle_by_leephon', 'stagnant_dishes_by_kiwibot', 'vice_reborn_by_baconsaur']
+  div.jumbotron
+    h1= env.t('presskit')
+    p= env.t('presskitText')
+    p
+      a.btn.btn-lg.btn-success(href='/presskit/presskit.zip') presskit.zip
 
-  //-#carousel.carousel.slide(data-ride='carousel')
-    ol.carousel-indicators
-      each img, i in imgs
-        li(class=i==0?'active':'', data-target='#carousel', data-slide-to=i)
-    .carousel-inner(role='listbox')
-      each img, i in imgs
-        .item(class=i==0?'active':'')
-          img(src="/presskit/#{img}.png")
-          //.carousel-caption=img
-    a.left.carousel-control(href='#carousel', role='button', data-slide='prev')
-      span.glyphicon.glyphicon-chevron-left(aria-hidden='true')
-      span.sr-only= env.t('previous')
-    a.right.carousel-control(href='#carousel', role='button', data-slide='next')
-      span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
-      span.sr-only= env.t('next')
+  h2= env.t('pkVideo')
+  | <iframe width="560" height="315" src="https://www.youtube.com/embed/hgdeJnSili0" frameborder="0" allowfullscreen></iframe>
 
-  ul.list-unstyled
-    each img in imgs
-      li
-        img.press-img(src="/presskit/#{img}.png")
+  -
+    var imgs = {
+      'Promo': [
+        'Promo',
+        'Promo - Thin'
+      ],
+      'Logo': [
+        'Icon with Text',
+        'Habitica Gryphon',
+        'iOS',
+        'Android'
+      ],
+      'Boss': [
+        'Basi-List',
+        'Stagnant Dishes',
+        'SnackLess Monster',
+        'Laundromancer',
+        'Necro-Vice',
+        'Battling the Ghost Stag',
+        'Dread Drag\'on of Dilatory'
+      ],
+      'Samples': {
+        'Website': [
+          'Tasks Page',
+          'Equipment',
+          'Market',
+          'Guilds',
+          'Challenges'
+        ],
+        'iOS': [
+          'Tasks Page',
+          'Level Up',
+          'Pets',
+          'Party',
+          'Boss'
+        ],
+        'Android': [
+          'User',
+          'Tasks Page',
+          'Reward',
+          'Level Up',
+          'Tavern',
+          'Party'
+        ]
+      }
+    }
+
+  each images, category in imgs
+    div
+      h2= env.t('pk' + category)
+      if Array.isArray(images)
+        each img in images
+          img.img-rendering-auto.press-img(src="/presskit/#{category}/#{img}.png")
+      else
+        each item, cat in images
+          div
+            h3= env.t('pk' + cat)
+            each img in item
+              img.img-rendering-auto.press-img(src="/presskit/#{category}/#{cat}/#{img}.png")

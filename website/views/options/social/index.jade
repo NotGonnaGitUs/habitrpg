@@ -5,42 +5,40 @@ include ./challenges
 include ./hall
 include ./quests/index
 include ./chat-message
+include ./party
+include ./groups/group-tasks
+include ./groups/group-plans
+include ./groups/create-group
 
 script(type='text/ng-template', id='partials/options.social.inbox.html')
+  .options-blurbmenu
+    small.muted!=env.t('blurbInbox')
+
   .container-fluid
     .row
       .col-md-12
         .form-inline
           a.btn.btn-xs.btn-danger(ng-click='deleteAllMessages()')=env.t('clearAll')
           | &nbsp; &nbsp; &nbsp;
+          a.btn.btn-xs.btn-default(href='/export/inbox.html', popover=env.t('exportInboxPopoverBody'),
+                popover-title=env.t('exportInboxPopoverTitle'),
+                popover-trigger='mouseenter', popover-placement='right',
+                popover-append-to-body='true')=env.t('exportInbox')
+          | &nbsp; &nbsp; &nbsp;
           .checkbox
             label
               input(type='checkbox', ng-model='user.inbox.optOut', ng-change='set({"inbox.optOut": user.inbox.optOut?true: false})')
               | &nbsp;
-              span.hint(popover-trigger='mouseenter', popover-placement='right', popover=env.t('optOutPopover'))=env.t('optOut')
+              span.hint(popover-trigger='mouseenter', popover-placement='right', popover=env.t('optOutPopover'))=env.t('optOutOfPMs')
         +chatMessages('inbox')
 
 script(type='text/ng-template', id='partials/options.social.tavern.html')
   include ./tavern
 
-script(type='text/ng-template', id='partials/options.social.party.html')
-  div(ng-if='group._id')
-    include ./group
-  div(ng-if='!group._id')
-    div(ng-show='user.invitations.party.id').container-fluid
-      h2=env.t('invitedTo', {name: '{{user.invitations.party.name}}'})
-      a.btn.btn-success(data-type='party', ng-click='join(user.invitations.party)')=env.t('accept')
-      a.btn.btn-danger(ng-click='reject()')=env.t('reject')
-    div(ng-hide='user.invitations.party.id').container-fluid
-      h2=env.t('createAParty')
-      p
-        =env.t('noPartyText')
-      pre.prettyprint.
-        {{user.id}}
-      p!=env.t('LFG', {linkStart: "<a href='https://habitrpg.com/#/options/groups/guilds/f2db2a7f-13c5-454d-b3ee-ea1f5089e601'>", linkEnd: "</a>"})
-      include ./create-group
-
 script(type='text/ng-template', id='partials/options.social.guilds.public.html')
+  .options-blurbmenu
+    small.muted=env.t('blurbGuildsPage')
+
   div.col-xs-12(ng-repeat='invitation in user.invitations.guilds' style='margin-bottom: 1.5em')
     h3=env.t('invitedTo', {name: '{{invitation.name}}'})
     a.btn.btn-success(data-type='guild', ng-click='join(invitation)')=env.t('accept')
@@ -55,10 +53,10 @@ script(type='text/ng-template', id='partials/options.social.guilds.public.html')
           li='{{::group.memberCount}} ' + env.t('members')
           // join / leave
           li.bg-transparent
-            a.btn.btn-sm.btn-danger(ng-if="::group._isMember", ng-click='clickLeave(group, $event)')
+            a.btn.btn-sm.btn-danger(ng-if="isMemberOfGroup(User.user._id, group)", ng-click='clickLeave(group, $event)')
               span.glyphicon.glyphicon-ban-circle
               =env.t('leave')
-            a.btn.btn-sm.btn-success(ng-if="::!group._isMember", ng-click='join(group)')
+            a.btn.btn-sm.btn-success(ng-if="!isMemberOfGroup(User.user._id, group)", ng-click='join(group)')
               span.glyphicon.glyphicon-ok
               =env.t('join')
         h4: a(href='/#/options/groups/guilds/{{::group._id}}') {{::group.name}}
@@ -69,7 +67,7 @@ script(type='text/ng-template', id='partials/options.social.guilds.detail.html')
 
 script(type='text/ng-template', id='partials/options.social.guilds.create.html')
   div.col-xs-12
-    include ./create-group
+    +groupCreateForm
 
 script(type='text/ng-template', id='partials/options.social.guilds.html')
   ul.options-submenu
@@ -109,6 +107,9 @@ script(type='text/ng-template', id='partials/options.social.html')
     li(ng-class="{ active: $state.includes('options.social.hall') }")
       a(ui-sref='options.social.hall.heroes')
         =env.t('hall')
+    li(ng-class="{ active: $state.includes('options.social.groupPlans') }")
+      a(ui-sref='options.social.groupPlans')
+        =env.t('groupPlansTitle')
 
   .tab-content
     .tab-pane.active
@@ -121,7 +122,7 @@ script(type='text/ng-template', id='modals/copyChatToDo.html')
     .form-group
       input.form-control(type='text',ng-model='text', ng-model-options="{debounce: 1000}")
     .form-group
-      textarea.form-control(rows='5',ng-model='notes', ng-model-options="{debounce: 1000}", focus-me)
+      textarea.form-control(rows='5',ng-model='notes', ng-model-options="{debounce: 1000}", focus-element='true')
 
     hr
 

@@ -1,3 +1,4 @@
+include ./message-modal
 include ./achievements
 include ./reroll
 include ./death
@@ -13,3 +14,18 @@ include ./rebirth
 include ./limited
 include ./invite-friends
 include ./welcome.jade
+include ./low-health.jade
+include ./level-up.jade
+include ./hatch-pet.jade
+include ./raise-pet.jade
+include ./won-challenge.jade
+include ./modify-inventory.jade
+include ./enable-desktop-notifications.jade
+include ./login-incentives.jade
+include ./login-incentives-reward-unlocked.jade
+include ./generic.jade
+include ./tasks-edit.jade
+
+//- Settings
+script(type='text/ng-template', id='modals/change-day-start.html')
+  include ./settings/change-day-start.jade
